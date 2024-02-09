@@ -16,6 +16,7 @@
 
 package org.jetbrains.kotlin.preloading;
 
+import io.github.pixee.security.ZipSecurity;
 import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -127,7 +128,7 @@ public class ClassPreloadingUtils {
             FileInputStream fileInputStream = new FileInputStream(jarFile);
             try {
                 byte[] buffer = new byte[10 * 1024];
-                ZipInputStream stream = new ZipInputStream(new BufferedInputStream(fileInputStream, 1 << 19));
+                ZipInputStream stream = ZipSecurity.createHardenedInputStream(new BufferedInputStream(fileInputStream, 1 << 19));
                 while (true) {
                     ZipEntry entry = stream.getNextEntry();
                     if (entry == null) break;
